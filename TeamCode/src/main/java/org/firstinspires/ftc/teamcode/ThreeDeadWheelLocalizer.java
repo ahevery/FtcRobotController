@@ -29,7 +29,7 @@ public final class ThreeDeadWheelLocalizer implements Localizer {
 
     public final Encoder par0, par1, perp;
 
-    public final double inPerTick;
+    public double inPerTick = 0.00291262135;
 
     private int lastPar0Pos, lastPar1Pos, lastPerpPos;
     private boolean initialized;
@@ -44,7 +44,6 @@ public final class ThreeDeadWheelLocalizer implements Localizer {
 
         // TODO: reverse encoder directions if needed
         par0.setDirection(DcMotorSimple.Direction.REVERSE);
-        perp.setDirection(DcMotorSimple.Direction.REVERSE);
 
         this.inPerTick = inPerTick;
 
