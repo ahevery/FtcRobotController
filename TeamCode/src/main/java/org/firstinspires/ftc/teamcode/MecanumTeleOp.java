@@ -2,8 +2,10 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import kotlin._Assertions;
 
@@ -23,6 +25,7 @@ public class MecanumTeleOp extends OpMode {
     private DcMotor back_right  = null;
     private DcMotor slide_left = null;
     private DcMotor slide_right = null;
+    private CRServo servo1 = null;
 
     private int slide_position = 0;
     private final int slide_max_position = 3800;
@@ -41,6 +44,8 @@ public class MecanumTeleOp extends OpMode {
         back_right   = hardwareMap.get(DcMotor.class, "backRightMotor");
         slide_left   = hardwareMap.get(DcMotor.class, "slideLeft");
         slide_right  = hardwareMap.get(DcMotor.class, "slideRight");
+
+        servo1 = hardwareMap.get(CRServo.class, "servo1");
 
         front_right.setDirection(DcMotorSimple.Direction.REVERSE);
 
@@ -64,6 +69,14 @@ public class MecanumTeleOp extends OpMode {
         } else if (gamepad1.dpad_down) {
             slide_position-=slide_step;
             slide_position= Math.max(slide_min_position, slide_position - slide_step);
+        }
+
+        if (gamepad1.dpad_left) {
+            servo1.setPower(-1);
+        } else if (gamepad1.dpad_right) {
+            servo1.setPower(1);
+        } else {
+            servo1.setPower(0);
         }
 
         if(slide_right.isBusy()) {
