@@ -29,6 +29,8 @@ public class MecanumTeleOp extends OpMode {
     private DcMotor slide_arm   = null;
     private Servo intake_position_servo   = null;
     private CRServo intake_spin_servo = null;
+    private Servo lift_left   = null;
+    private Servo lift_right   = null;
 
     private int slide_position = 0;
     private final int slide_max_position = 3800;
@@ -45,6 +47,9 @@ public class MecanumTeleOp extends OpMode {
     private final double intake_min_position = 0;
     private final double intake_step = 0.02;
 
+
+    private double lift_position = 0;
+
     @Override
     public void init() {
 
@@ -59,6 +64,8 @@ public class MecanumTeleOp extends OpMode {
         slide_arm    = hardwareMap.get(DcMotor.class, "armMotor");
         intake_spin_servo = hardwareMap.get(CRServo.class, "intake_spin");
         intake_position_servo = hardwareMap.get(Servo.class, "intake_position");
+        lift_left = hardwareMap.get(Servo.class, "left lift");
+        lift_right = hardwareMap.get(Servo.class, "right lift");
 
 
 
@@ -131,6 +138,17 @@ public class MecanumTeleOp extends OpMode {
 
         intake_position_servo.setPosition(intake_position);
 
+        // lift position
+        if (gamepad1.x ) {
+            lift_position= Math.min(1, lift_position + .1);
+        } else if (gamepad1.b) {
+            lift_position= Math.max(0, lift_position - .1);
+        }
+
+        lift_left.setPosition(lift_position);
+        lift_right.setPosition(1-lift_position);
+
+
         //  intake spin
         if (gamepad1.right_trigger>0.2 || gamepad2.right_trigger>0.2) {
             intake_spin_servo.setPower(1);
@@ -174,6 +192,7 @@ public class MecanumTeleOp extends OpMode {
         telemetry.addData("Slide left position", slide_left.getCurrentPosition());
         telemetry.addData("Arm target position", arm_position);
         telemetry.addData("Arm position", slide_arm.getCurrentPosition());
+        telemetry.addData("Lift position", lift_position);
         telemetry.addData("Intake target position", intake_position);
         telemetry.addData("Intake position", intake_position_servo.getPosition());
         telemetry.addData("right_trigger", gamepad1.right_trigger);
