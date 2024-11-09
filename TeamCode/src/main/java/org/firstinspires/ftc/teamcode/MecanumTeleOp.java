@@ -90,17 +90,23 @@ public class MecanumTeleOp extends OpMode {
     @Override
     public void loop() {
         last_mode = mode;
-        if (gamepad1.left_bumper) {
-            mode= gamepad1.right_bumper ? Mode.HANG : Mode.UNLOAD;
+        if (last_mode == Mode.HANG) {
+            if (!gamepad1.left_bumper && !gamepad1.right_bumper && !gamepad2.left_bumper && !gamepad2.right_bumper) {
+                mode = Mode.NORMAL;
+            }
         } else {
-            if (gamepad1.right_bumper ) {
-                mode = Mode.LOAD;
-            } else if (mode != Mode.INIT){
-                mode =  Mode.NORMAL;
+            if (gamepad1.left_bumper || gamepad2.left_bumper) {
+                mode= (gamepad1.right_bumper || gamepad2.right_bumper) ? Mode.HANG : Mode.UNLOAD;
+            } else {
+                if (gamepad1.right_bumper || gamepad2.right_bumper ) {
+                    mode = Mode.LOAD;
+                } else if (mode != Mode.INIT){
+                    mode =  Mode.NORMAL;
+                }
             }
         }
 
-        if (last_mode != mode) {
+        if (last_mode != mode ) {
             double ticks_per_degree = ((double)arm_max_position) / 200.0;
             switch (mode) {
                 case NORMAL:
@@ -156,7 +162,7 @@ public class MecanumTeleOp extends OpMode {
         slide_left.setTargetPosition(slide_position);
         slide_left.setPower(slide_left.isBusy() ? 1.0 : 0);
 
-        arm_position = (int) clip(arm_position, arm_min_position, arm_max_position,  arm_step * gamepad1.right_stick_y,
+        arm_position = (int) clip(arm_position, arm_min_position, arm_max_position,  arm_step * (gamepad1.right_stick_y +gamepad2.right_stick_y),
                 true, false);
         arm.setTargetPosition(arm_position);
         arm.setPower(arm.isBusy() ? .25 : 0);
