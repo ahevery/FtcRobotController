@@ -44,7 +44,7 @@ public class MecanumTeleOp extends OpMode {
     private Servo lift_right = null;
     private int slide_position = 0;
     private int arm_position = 0;
-    private double intake_position = 0;
+    private double intake_position = 0.003;
     private double lift_position = 0;
 
     private Mode last_mode = Mode.INIT;
@@ -113,7 +113,7 @@ public class MecanumTeleOp extends OpMode {
                     break;
                 case LOAD:
                     slide_position = 0;
-                    arm_position = (int)(170.0 * ticks_per_degree);
+                    arm_position = (int)(160 * ticks_per_degree);
                     break;
                 case UNLOAD:
                     arm_position = (int)(45.0 * ticks_per_degree);
@@ -171,7 +171,7 @@ public class MecanumTeleOp extends OpMode {
             case NORMAL:
                 break;
             case LOAD:
-                intake_position = ((arm_angle-180.0)/180.0  + .6);
+                intake_position = ((arm_angle-180.0)/180.0  + .75);
                 break;
             case UNLOAD:
                 intake_position = .8;
