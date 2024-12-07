@@ -40,7 +40,8 @@ public class MecanumTeleOp extends OpMode {
     private DcMotor slide_right = null;
     private DcMotor arm = null;
     private Servo intake_position_servo = null;
-    private CRServo intake_spin_servo = null;
+    private CRServo intake_spin_servo_left = null;
+    private CRServo intake_spin_servo_right = null;
     private Servo lift_left = null;
     private Servo lift_right = null;
     private int slide_position = 0;
@@ -63,7 +64,8 @@ public class MecanumTeleOp extends OpMode {
         slide_left = hardwareMap.get(DcMotor.class, "slideLeft");
         slide_right = hardwareMap.get(DcMotor.class, "slideRight");
         arm = hardwareMap.get(DcMotor.class, "armMotor");
-        intake_spin_servo = hardwareMap.get(CRServo.class, "intake_spin");
+        intake_spin_servo_left = hardwareMap.get(CRServo.class, "intake_spin_left");
+        intake_spin_servo_right = hardwareMap.get(CRServo.class, "intake_spin_right ");
         intake_position_servo = hardwareMap.get(Servo.class, "intake_position");
         lift_left = hardwareMap.get(Servo.class, "left lift");
         lift_right = hardwareMap.get(Servo.class, "right lift");
@@ -85,7 +87,8 @@ public class MecanumTeleOp extends OpMode {
         arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         arm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        intake_spin_servo.setDirection(DcMotorSimple.Direction.FORWARD);
+        intake_spin_servo_left.setDirection(DcMotorSimple.Direction.REVERSE);
+        intake_spin_servo_right.setDirection(DcMotorSimple.Direction.FORWARD);
     }
 
     @Override
@@ -193,11 +196,14 @@ public class MecanumTeleOp extends OpMode {
 
         //  intake spin
         if (gamepad1.right_trigger > 0.2 || gamepad2.right_trigger > 0.2) {
-            intake_spin_servo.setPower(1);
+            intake_spin_servo_left.setPower(1);
+            intake_spin_servo_right.setPower(1);
         } else if (gamepad1.left_trigger > 0.2 || gamepad2.left_trigger > 0.2) {
-            intake_spin_servo.setPower(-1);
+            intake_spin_servo_left.setPower(-1);
+            intake_spin_servo_right.setPower(-1);
         } else {
-            intake_spin_servo.setPower(0);
+            intake_spin_servo_left.setPower(0);
+            intake_spin_servo_right.setPower(0);
         }
 
         telemetry.addData("Mode", mode.toString());
@@ -211,7 +217,7 @@ public class MecanumTeleOp extends OpMode {
         telemetry.addData("Intake position", intake_position_servo.getPosition());
         telemetry.addData("right_trigger", gamepad1.right_trigger);
         telemetry.addData("left_trigger", gamepad1.left_trigger);
-        telemetry.addData("spin", intake_spin_servo.getPower());
+        telemetry.addData("spin", intake_spin_servo_left.getPower());
         telemetry.update();
     }
 
