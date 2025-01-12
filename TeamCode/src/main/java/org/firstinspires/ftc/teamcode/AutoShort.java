@@ -22,3 +22,5 @@ public final class AutoShort extends LinearOpMode {
                         .build());
     }
 }
+
+

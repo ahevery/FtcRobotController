@@ -22,10 +22,10 @@ public class MecanumTeleOp extends OpMode {
 
     private final int slide_max_position = 3800;
     private final int slide_min_position = 0;
-    private final int slide_step = 10;
+    private final int slide_step = 17;
     private final int arm_max_position = 1250;
     private final int arm_min_position = 0;
-    private final int arm_min_hang = -250;
+    private final int arm_min_hang = 0;
     private final int arm_angle_sweep = 200;
     private final int arm_step = 5;
     private final double intake_max_position = 1250;
@@ -117,15 +117,15 @@ public class MecanumTeleOp extends OpMode {
                     break;
                 case LOAD:
                     slide_position = 0;
-                    arm_position = (int)(160 * ticks_per_degree);
+                    arm_position = (int)(155 * ticks_per_degree);
                     break;
                 case UNLOAD:
-                    arm_position = (int)(45.0 * ticks_per_degree);
+                    arm_position = (int)(40.0 * ticks_per_degree);
                     slide_position = (int)(.75 * slide_max_position);
                     break;
                 case HANG:
                     arm_position = arm_min_hang;
-                    slide_position = (int)(.5 * slide_max_position);
+                    slide_position = (int)(0 * slide_max_position);
                     break;
             }
         }
@@ -137,9 +137,9 @@ public class MecanumTeleOp extends OpMode {
 
         if (mode == Mode.LOAD || mode == Mode.UNLOAD) {
             // go into fine adjustment
-            y = y * 0.15;
-            x = x * 0.15;
-            rx = rx * 0.15;
+            y = y * 0.22;
+            x = x * 0.22;
+            rx = rx * 0.22;
         }
 
         // Denominator is the largest motor power (absolute value) or 1
