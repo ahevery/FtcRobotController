@@ -24,8 +24,7 @@ public class MecanumTeleOp extends OpMode {
     private final int slide_min_position = 0;
     private final int slide_step = 17;
     private final int arm_max_position = 1250;
-    private final int arm_min_position = 0;
-    private final int arm_min_hang = 0;
+    private  int arm_min_position = 0;
     private final int arm_angle_sweep = 200;
     private final int arm_step = 5;
     private final double intake_max_position = 1250;
@@ -118,14 +117,17 @@ public class MecanumTeleOp extends OpMode {
                 case LOAD:
                     slide_position = 0;
                     arm_position = (int)(155 * ticks_per_degree);
+                    arm_min_position = 0;
                     break;
                 case UNLOAD:
                     arm_position = (int)(40.0 * ticks_per_degree);
                     slide_position = (int)(.75 * slide_max_position);
+                    arm_min_position = 0;
                     break;
                 case HANG:
-                    arm_position = arm_min_hang;
+                    arm_position = 0;// arm_min_hang;
                     slide_position = (int)(0 * slide_max_position);
+                    arm_min_position = -500;
                     break;
             }
         }
@@ -168,7 +170,7 @@ public class MecanumTeleOp extends OpMode {
 
         boolean isHang = mode == Mode.HANG;
 
-        arm_position = (int) clip(arm_position, isHang ?arm_min_hang: arm_min_position, arm_max_position,  arm_step * (gamepad1.right_stick_y +gamepad2.right_stick_y),
+        arm_position = (int) clip(arm_position, arm_min_position, arm_max_position,  arm_step * (gamepad1.right_stick_y +gamepad2.right_stick_y),
                 true, false);
         arm.setTargetPosition(arm_position);
         arm.setPower(arm.isBusy() ? .25 : 0);
